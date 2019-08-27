@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-49925874-3"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-49925874-3');
+  </script>
+
+  <meta charset='utf-8'>
+  <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+
+  <title>Git - Trabalhando com Remotos</title>
+
+  <link href='/favicon.ico' rel='shortcut icon' type='image/x-icon'>
+
+  <link rel="stylesheet" media="screen" href="/assets/application-770637a5bb9aa145ed850e96a650543a637264d28db1011251a1a4287d7e1b10.css" />
+  <script src="/assets/modernize-91eb7473bfa18e104376c623be884766692c7cf93c8769aea544ad57e3ea2292.js"></script>
+  <!--[if (gte IE 6)&(lte IE 8)]>
+  <script src="/javascripts/selectivizr-min.js"></script>
+  <![endif]-->
+
+</head>
+
+<body id="documentation">
+
+  <div class="inner">
+    <header>
+
+  <a href="/"><img src="/images/logo@2x.png" width="110" height="46" alt="Git" /></a>
+  <span id="tagline"></span>
+  <script type="text/javascript">
+    var taglines = ["fast-version-control","everything-is-local","distributed-even-if-your-workflow-isnt","local-branching-on-the-cheap","distributed-is-the-new-centralized"];
+    var tagline = taglines[Math.floor(Math.random() * taglines.length)];
+    document.getElementById('tagline').innerHTML = '--' + tagline;
+  </script>
+  <form id="search" action="/search/results">
+    <input id="search-text" name="search" placeholder="Search entire site..." autocomplete="off" type="text" />
+  </form>
+  <div id="search-results"></div>
+
+</header>
+
+  </div> <!-- .inner -->
+
+    <div class="inner">
+      <div id="content-wrapper">
+        <aside class="sidebar">
+  <nav>
+    <ul>
+      <li>
+        <a href="/about">About</a>
+        <ul class="">
+          <li>
+            <a href="/about">Branching and Merging</a>
+          </li>
+          <li>
+            <a href="/about/small-and-fast">Small and Fast</a>
+          </li>
+          <li>
+            <a href="/about/distributed">Distributed</a>
+          </li>
+          <li>
+            <a href="/about/info-assurance">Data Assurance</a>
+          </li>
+          <li>
+            <a href="/about/staging-area">Staging Area</a>
+          </li>
+          <li>
+            <a href="/about/free-and-open-source">Free and Open Source</a>
+          </li>
+          <li>
+            <a href="/about/trademark">Trademark</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a class="active" href="/doc">Documentation</a>
+        <ul class="expanded">
+          <li>
+            <a href="/docs">Reference</a>
+          </li>
+          <li>
+            <a href="/book">Book</a>
+          </li>
+          <li>
+            <a href="/videos">Videos</a>
+          </li>
+          <li>
+            <a href="/doc/ext">External Links</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="/downloads">Downloads</a>
+        <ul class="">
+          <li>
+            <a href="/downloads/guis">GUI Clients</a>
+          </li>
+          <li>
+            <a href="/downloads/logos">Logos</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="/community">Community</a>
+      </li>
+    </ul>
+      <hr class="sidebar">
+        <p>
+This book is available in
+  <a href="/book/en">English</a>.
+</p>
+<p>
+  Full translation available in
+  <table>
+    <tr><td><a href="/book/bg">български език</a>,</td></tr>
+    <tr><td><a href="/book/es">Español</a>,</td></tr>
+    <tr><td><a href="/book/fr">Français</a>,</td></tr>
+    <tr><td><a href="/book/gr">Ελληνικά</a>,</td></tr>
+    <tr><td><a href="/book/ja">日本語</a>,</td></tr>
+    <tr><td><a href="/book/ko">한국어</a>,</td></tr>
+    <tr><td><a href="/book/nl">Nederlands</a>,</td></tr>
+    <tr><td><a href="/book/ru">Русский</a>,</td></tr>
+    <tr><td><a href="/book/sl">Slovenščina</a>,</td></tr>
+    <tr><td><a href="/book/tl">Tagalog</a>,</td></tr>
+    <tr><td><a href="/book/uk">Українська</a></td></tr>
+    <tr><td><a href="/book/zh">简体中文</a>,</td></tr>
+  </table>
+</p>
+<p>
+  Partial translations available in
+  <table>
+    <tr><td><a href="/book/cs">Čeština</a>,</td></tr>
+    <tr><td><a href="/book/mk">Македонски</a>,</td></tr>
+    <tr><td><a href="/book/pl">Polski</a>,</td></tr>
+    <tr><td><a href="/book/sr">Српски</a>,</td></tr>
+    <tr><td><a href="/book/uz">Ўзбекча</a>,</td></tr>
+    <tr><td><a href="/book/zh-tw">繁體中文</a>,</td></tr>
+  </table>
+</p>
+<p>
+  Translations started for
+  <table>
+    <tr><td><a href="/book/be">Беларуская</a>,</td></tr>
+    <tr><td><a href="/book/de">Deutsch</a>,</td></tr>
+    <tr><td><a href="/book/fa" dir="rtl">فارسی</a>,</td></tr>
+    <tr><td><a href="/book/id">Indonesian</a>,</td></tr>
+    <tr><td><a href="/book/it">Italiano</a>,</td></tr>
+    <tr><td><a href="/book/ms">Bahasa Melayu</a>,</td></tr>
+    <tr><td><a href="/book/pt-br">Português (Brasil)</a>,</td></tr>
+    <tr><td><a href="/book/pt-pt">Português (Portugal)</a>,</td></tr>
+    <tr><td><a href="/book/tr">Türkçe</a>.</td></tr>
+  </table>
+</p>
+<hr class="sidebar"/>
+<p>
+The source of this book is <a href="https://github.com/progit/progit2">hosted on GitHub.</a></br>
+Patches, suggestions and comments are welcome.
+</p>
+
+
+  </nav>
+</aside>
+
+        <div id="content">
+          
+
+<div id='book-chapters'>
+  <a class="dropdown-trigger" id="book-chapters-trigger" data-panel-id="chapters-dropdown" href="#">Chapters ▾</a>
+<div class='dropdown-panel' id='chapters-dropdown'>
+  <div class="three-column">
+    <div class='column-left'>
+      <ol class='book-toc'>
+  <li class='chapter'>
+  <h2>. <a href="/book/pt-br/v1/Primeiros-passos">Primeiros passos</a></h2>
+    <ol>
+          <li>
+            .1
+            <a href="/book/pt-br/v1/Primeiros-passos-Sobre-Controle-de-Vers%C3%A3o">Sobre Controle de Versão</a>
+          </li>
+          <li>
+            .2
+            <a href="/book/pt-br/v1/Primeiros-passos-Uma-Breve-Hist%C3%B3ria-do-Git">Uma Breve História do Git</a>
+          </li>
+          <li>
+            .3
+            <a href="/book/pt-br/v1/Primeiros-passos-No%C3%A7%C3%B5es-B%C3%A1sicas-de-Git">Noções Básicas de Git</a>
+          </li>
+          <li>
+            .4
+            <a href="/book/pt-br/v1/Primeiros-passos-Instalando-Git">Instalando Git</a>
+          </li>
+          <li>
+            .5
+            <a href="/book/pt-br/v1/Primeiros-passos-Configura%C3%A7%C3%A3o-Inicial-do-Git">Configuração Inicial do Git</a>
+          </li>
+          <li>
+            .6
+            <a href="/book/pt-br/v1/Primeiros-passos-Obtendo-Ajuda">Obtendo Ajuda</a>
+          </li>
+          <li>
+            .7
+            <a href="/book/pt-br/v1/Primeiros-passos-Resumo">Resumo</a>
+          </li>
+    </ol>
+  </li>
+  <li class='chapter'>
+  <h2>. <a href="/book/pt-br/v1/Git-Essencial">Git Essencial</a></h2>
+    <ol>
+          <li>
+            .1
+            <a href="/book/pt-br/v1/Git-Essencial-Obtendo-um-Reposit%C3%B3rio-Git">Obtendo um Repositório Git</a>
+          </li>
+          <li>
+            .2
+            <a href="/book/pt-br/v1/Git-Essencial-Gravando-Altera%C3%A7%C3%B5es-no-Reposit%C3%B3rio">Gravando Alterações no Repositório</a>
+          </li>
+          <li>
+            .3
+            <a href="/book/pt-br/v1/Git-Essencial-Visualizando-o-Hist%C3%B3rico-de-Commits">Visualizando o Histórico de Commits</a>
+          </li>
+          <li>
+            .4
+            <a href="/book/pt-br/v1/Git-Essencial-Desfazendo-Coisas">Desfazendo Coisas</a>
+          </li>
+          <li>
+            .5
+            <a href="/book/pt-br/v1/Git-Essencial-Trabalhando-com-Remotos">Trabalhando com Remotos</a>
+          </li>
+          <li>
+            .6
+            <a href="/book/pt-br/v1/Git-Essencial-Tagging">Tagging</a>
+          </li>
+          <li>
+            .7
+            <a href="/book/pt-br/v1/Git-Essencial-Dicas-e-Truques">Dicas e Truques</a>
+          </li>
+          <li>
+            .8
+            <a href="/book/pt-br/v1/Git-Essencial-Sum%C3%A1rio">Sumário</a>
+          </li>
+    </ol>
+  </li>
+  <li class='chapter'>
+  <h2>. <a href="/book/pt-br/v1/Ramifica%C3%A7%C3%A3o-Branching-no-Git">Ramificação (Branching) no Git</a></h2>
+    <ol>
+          <li>
+            .1
+            <a href="/book/pt-br/v1/Ramifica%C3%A7%C3%A3o-Branching-no-Git-O-que-%C3%A9-um-Branch">O que é um Branch</a>
+          </li>
+          <li>
+            .2
+            <a href="/book/pt-br/v1/Ramifica%C3%A7%C3%A3o-Branching-no-Git-B%C3%A1sico-de-Branch-e-Merge">Básico de Branch e Merge</a>
+          </li>
+          <li>
+            .3
+            <a href="/book/pt-br/v1/Ramifica%C3%A7%C3%A3o-Branching-no-Git-Gerenciamento-de-Branches">Gerenciamento de Branches</a>
+          </li>
+          <li>
+            .4
+            <a href="/book/pt-br/v1/Ramifica%C3%A7%C3%A3o-Branching-no-Git-Fluxos-de-Trabalho-com-Branches">Fluxos de Trabalho com Branches</a>
+          </li>
+          <li>
+            .5
+            <a href="/book/pt-br/v1/Ramifica%C3%A7%C3%A3o-Branching-no-Git-Branches-Remotos">Branches Remotos</a>
+          </li>
+          <li>
+            .6
+            <a href="/book/pt-br/v1/Ramifica%C3%A7%C3%A3o-Branching-no-Git-Rebasing">Rebasing</a>
+          </li>
+          <li>
+            .7
+            <a href="/book/pt-br/v1/Ramifica%C3%A7%C3%A3o-Branching-no-Git-Sum%C3%A1rio">Sumário</a>
+          </li>
+    </ol>
+  </li>
+</ol>
+
+    </div>
+    <div class='column-middle'>
+      <ol class='book-toc'>
+  <li class='chapter'>
+  <h2>. <a href="/book/pt-br/v1/Git-no-Servidor">Git no Servidor</a></h2>
+    <ol>
+          <li>
+            .1
+            <a href="/book/pt-br/v1/Git-no-Servidor-Os-Protocolos">Os Protocolos</a>
+          </li>
+          <li>
+            .2
+            <a href="/book/pt-br/v1/Git-no-Servidor-Configurando-Git-no-Servidor">Configurando Git no Servidor</a>
+          </li>
+          <li>
+            .3
+            <a href="/book/pt-br/v1/Git-no-Servidor-Gerando-Sua-Chave-P%C3%BAblica-SSH">Gerando Sua Chave Pública SSH</a>
+          </li>
+          <li>
+            .4
+            <a href="/book/pt-br/v1/Git-no-Servidor-Configurando-o-Servidor">Configurando o Servidor</a>
+          </li>
+          <li>
+            .5
+            <a href="/book/pt-br/v1/Git-no-Servidor-Acesso-P%C3%BAblico">Acesso Público</a>
+          </li>
+          <li>
+            .6
+            <a href="/book/pt-br/v1/Git-no-Servidor-GitWeb">GitWeb</a>
+          </li>
+          <li>
+            .7
+            <a href="/book/pt-br/v1/Git-no-Servidor-Gitosis">Gitosis</a>
+          </li>
+          <li>
+            .8
+            <a href="/book/pt-br/v1/Git-no-Servidor-Gitolite">Gitolite</a>
+          </li>
+          <li>
+            .9
+            <a href="/book/pt-br/v1/Git-no-Servidor-Servi%C3%A7o-Git">Serviço Git</a>
+          </li>
+          <li>
+            .10
+            <a href="/book/pt-br/v1/Git-no-Servidor-Git-Hospedado">Git Hospedado</a>
+          </li>
+          <li>
+            .11
+            <a href="/book/pt-br/v1/Git-no-Servidor-Sum%C3%A1rio">Sumário</a>
+          </li>
+    </ol>
+  </li>
+  <li class='chapter'>
+  <h2>. <a href="/book/pt-br/v1/Git-Distribu%C3%ADdo">Git Distribuído</a></h2>
+    <ol>
+          <li>
+            .1
+            <a href="/book/pt-br/v1/Git-Distribu%C3%ADdo-Fluxos-de-Trabalho-Distribu%C3%ADdos">Fluxos de Trabalho Distribuídos</a>
+          </li>
+          <li>
+            .2
+            <a href="/book/pt-br/v1/Git-Distribu%C3%ADdo-Contribuindo-Para-Um-Projeto">Contribuindo Para Um Projeto</a>
+          </li>
+          <li>
+            .3
+            <a href="/book/pt-br/v1/Git-Distribu%C3%ADdo-Mantendo-Um-Projeto">Mantendo Um Projeto</a>
+          </li>
+          <li>
+            .4
+            <a href="/book/pt-br/v1/Git-Distribu%C3%ADdo-Resumo">Resumo</a>
+          </li>
+    </ol>
+  </li>
+  <li class='chapter'>
+  <h2>. <a href="/book/pt-br/v1/Ferramentas-do-Git">Ferramentas do Git</a></h2>
+    <ol>
+          <li>
+            .1
+            <a href="/book/pt-br/v1/Ferramentas-do-Git-Sele%C3%A7%C3%A3o-de-Revis%C3%A3o">Seleção de Revisão</a>
+          </li>
+          <li>
+            .2
+            <a href="/book/pt-br/v1/Ferramentas-do-Git-%C3%81rea-de-Sele%C3%A7%C3%A3o-Interativa">Área de Seleção Interativa</a>
+          </li>
+          <li>
+            .3
+            <a href="/book/pt-br/v1/Ferramentas-do-Git-Fazendo-Stash">Fazendo Stash</a>
+          </li>
+          <li>
+            .4
+            <a href="/book/pt-br/v1/Ferramentas-do-Git-Reescrevendo-o-Hist%C3%B3rico">Reescrevendo o Histórico</a>
+          </li>
+          <li>
+            .5
+            <a href="/book/pt-br/v1/Ferramentas-do-Git-Depurando-com-Git">Depurando com Git</a>
+          </li>
+          <li>
+            .6
+            <a href="/book/pt-br/v1/Ferramentas-do-Git-Subm%C3%B3dulos">Submódulos</a>
+          </li>
+          <li>
+            .7
+            <a href="/book/pt-br/v1/Ferramentas-do-Git-Merge-de-Sub-%C3%A1rvore-Subtree-Merging">Merge de Sub-árvore (Subtree Merging)</a>
+          </li>
+          <li>
+            .8
+            <a href="/book/pt-br/v1/Ferramentas-do-Git-Sum%C3%A1rio">Sumário</a>
+          </li>
+    </ol>
+  </li>
+</ol>
+
+    </div>
+    <div class='column-right'>
+      <ol class='book-toc'>
+  <li class='chapter'>
+  <h2>. <a href="/book/pt-br/v1/Customizando-o-Git">Customizando o Git</a></h2>
+    <ol>
+          <li>
+            .1
+            <a href="/book/pt-br/v1/Customizando-o-Git-Configura%C3%A7%C3%A3o-do-Git">Configuração do Git</a>
+          </li>
+          <li>
+            .2
+            <a href="/book/pt-br/v1/Customizando-o-Git-Atributos-Git">Atributos Git</a>
+          </li>
+          <li>
+            .3
+            <a href="/book/pt-br/v1/Customizando-o-Git-Hooks-do-Git">Hooks do Git</a>
+          </li>
+          <li>
+            .4
+            <a href="/book/pt-br/v1/Customizando-o-Git-Um-exemplo-de-Pol%C3%ADtica-Git-For%C3%A7ada">Um exemplo de Política Git Forçada</a>
+          </li>
+          <li>
+            .5
+            <a href="/book/pt-br/v1/Customizando-o-Git-Sum%C3%A1rio">Sumário</a>
+          </li>
+    </ol>
+  </li>
+  <li class='chapter'>
+  <h2>. <a href="/book/pt-br/v1/Git-e-Outros-Sistemas">Git e Outros Sistemas</a></h2>
+    <ol>
+          <li>
+            .1
+            <a href="/book/pt-br/v1/Git-e-Outros-Sistemas-Git-e-Subversion">Git e Subversion</a>
+          </li>
+          <li>
+            .2
+            <a href="/book/pt-br/v1/Git-e-Outros-Sistemas-Migrando-para-o-Git">Migrando para o Git</a>
+          </li>
+          <li>
+            .3
+            <a href="/book/pt-br/v1/Git-e-Outros-Sistemas-Resumo">Resumo</a>
+          </li>
+    </ol>
+  </li>
+  <li class='chapter'>
+  <h2>. <a href="/book/pt-br/v1/Git-Internamente">Git Internamente</a></h2>
+    <ol>
+          <li>
+            .1
+            <a href="/book/pt-br/v1/Git-Internamente-Encanamento-Plumbing-e-Porcelana-Porcelain">Encanamento (Plumbing) e Porcelana (Porcelain)</a>
+          </li>
+          <li>
+            .2
+            <a href="/book/pt-br/v1/Git-Internamente-Objetos-do-Git">Objetos do Git</a>
+          </li>
+          <li>
+            .3
+            <a href="/book/pt-br/v1/Git-Internamente-Referencias-Git">Referencias Git</a>
+          </li>
+          <li>
+            .4
+            <a href="/book/pt-br/v1/Git-Internamente-Packfiles">Packfiles</a>
+          </li>
+          <li>
+            .5
+            <a href="/book/pt-br/v1/Git-Internamente-O-Refspec">O Refspec</a>
+          </li>
+          <li>
+            .6
+            <a href="/book/pt-br/v1/Git-Internamente-Protocolos-de-Transfer%C3%AAncia">Protocolos de Transferência</a>
+          </li>
+          <li>
+            .7
+            <a href="/book/pt-br/v1/Git-Internamente-Manuten%C3%A7%C3%A3o-e-Recupera%C3%A7%C3%A3o-de-Dados">Manutenção e Recuperação de Dados</a>
+          </li>
+          <li>
+            .8
+            <a href="/book/pt-br/v1/Git-Internamente-Resumo">Resumo</a>
+          </li>
+    </ol>
+  </li>
+</ol>
+
+    </div>
+  </div>
+ </div>
+
+    <span class="light" id="edition">
+      1st Edition
+    </span>
+</div>
+
+<div id='main' class="book edition1">
+    <h1>.5 Git Essencial - Trabalhando com Remotos</h1>
+  <div><h2>Trabalhando com Remotos</h2>
+
+<p>Para ser capaz de colaborar com qualquer projeto no Git, você precisa saber como gerenciar seus repositórios remotos. Repositórios remotos são versões do seu projeto que estão hospedados na Internet ou em uma rede em algum lugar. Você pode ter vários deles, geralmente cada um é somente leitura ou leitura/escrita pra você. Colaborar com outros envolve gerenciar esses repositórios remotos e fazer o push e pull de dados neles quando você precisa compartilhar trabalho.
+Gerenciar repositórios remotos inclui saber como adicionar repositório remoto, remover remotos que não são mais válidos, gerenciar vários branches remotos e defini-los como monitorados ou não, e mais. Nesta seção, vamos cobrir essas habilidades de gerenciamento remoto.</p>
+
+<h3 id="Exibindo-Seus-Remotos"><a href="#Exibindo-Seus-Remotos">Exibindo Seus Remotos</a></h3>
+
+<p>Para ver quais servidores remotos você configurou, você pode executar o comando <code>git remote</code>. Ele lista o nome de cada remoto que você especificou. Se você tiver clonado seu repositório, você deve pelo menos ver um chamado <em>origin</em> — esse é o nome padrão que o Git dá ao servidor de onde você fez o clone:</p>
+
+<pre><code>$ git clone git://github.com/schacon/ticgit.git
+Initialized empty Git repository in /private/tmp/ticgit/.git/
+remote: Counting objects: 595, done.
+remote: Compressing objects: 100% (269/269), done.
+remote: Total 595 (delta 255), reused 589 (delta 253)
+Receiving objects: 100% (595/595), 73.31 KiB | 1 KiB/s, done.
+Resolving deltas: 100% (255/255), done.
+$ cd ticgit
+$ git remote
+origin
+</code></pre>
+
+<p>Você também pode especificar <code>-v</code>, que mostra a URL que o Git armazenou para o nome do remoto:</p>
+
+<pre><code>$ git remote -v
+origin  git://github.com/schacon/ticgit.git (fetch)
+origin  git://github.com/schacon/ticgit.git (push)
+</code></pre>
+
+<p>Se você tem mais de um remoto, o comando lista todos. Por exemplo, meu repositório Grit se parece com isso.</p>
+
+<pre><code>$ cd grit
+$ git remote -v
+bakkdoor  git://github.com/bakkdoor/grit.git
+cho45     git://github.com/cho45/grit.git
+defunkt   git://github.com/defunkt/grit.git
+koke      git://github.com/koke/grit.git
+origin    git@github.com:mojombo/grit.git
+</code></pre>
+
+<p>Isso significa que podemos puxar contribuições de qualquer um desses usuários muito facilmente. Mas note que somente o remoto origin é uma URL SSH, sendo o único pra onde eu posso fazer o push (vamos ver o motivo disso no <em>Capítulo 4</em>).</p>
+
+<h3 id="Adicionando-Repositórios-Remotos"><a href="#Adicionando-Repositórios-Remotos">Adicionando Repositórios Remotos</a></h3>
+
+<p>Eu mencionei e dei algumas demonstrações de adição de repositórios remotos nas seções anteriores, mas aqui está como fazê-lo explicitamente. Para adicionar um novo repositório remoto no Git com um nome curto, para que você possa fazer referência facilmente, execute <code>git remote add [nomecurto] [url]</code>:</p>
+
+<pre><code>$ git remote
+origin
+$ git remote add pb git://github.com/paulboone/ticgit.git
+$ git remote -v
+origin    git://github.com/schacon/ticgit.git
+pb    git://github.com/paulboone/ticgit.git
+</code></pre>
+
+<p>Agora você pode usar a string <code>pb</code> na linha de comando em lugar da URL completa. Por exemplo, se você quer fazer o fetch de todos os dados de Paul que você ainda não tem no seu repositório, você pode executar git fetch pb:</p>
+
+<pre><code>$ git fetch pb
+remote: Counting objects: 58, done.
+remote: Compressing objects: 100% (41/41), done.
+remote: Total 44 (delta 24), reused 1 (delta 0)
+Unpacking objects: 100% (44/44), done.
+From git://github.com/paulboone/ticgit
+ * [new branch]      master     -&gt; pb/master
+ * [new branch]      ticgit     -&gt; pb/ticgit
+</code></pre>
+
+<p>O branch master de Paul é localmente acessível como <code>pb/master</code> — você pode fazer o merge dele em um de seus branches, ou fazer o check out de um branch local a partir deste ponto se você quiser inspecioná-lo.</p>
+
+<h3 id="Fazendo-o-Fetch-e-Pull-de-Seus-Remotos"><a href="#Fazendo-o-Fetch-e-Pull-de-Seus-Remotos">Fazendo o Fetch e Pull de Seus Remotos</a></h3>
+
+<p>Como você acabou de ver, para pegar dados dos seus projetos remotos, você pode executar:</p>
+
+<pre><code>$ git fetch [nome-remoto]
+</code></pre>
+
+<p>Esse comando vai até o projeto remoto e pega todos os dados que você ainda não tem. Depois de fazer isso, você deve ter referências para todos os branches desse remoto, onde você pode fazer o merge ou inspecionar a qualquer momento. (Vamos ver o que são branches e como usá-los mais detalhadamente no <em>Capítulo 3</em>.)</p>
+
+<p>Se você clonar um repositório, o comando automaticamente adiciona o remoto com o nome <em>origin</em>. Então, <code>git fetch origin</code> busca qualquer novo trabalho que foi enviado para esse servidor desde que você o clonou (ou fez a última busca). É importante notar que o comando <code>fetch</code> traz os dados para o seu repositório local — ele não faz o merge automaticamente com o seus dados ou modifica o que você está trabalhando atualmente. Você terá que fazer o merge manualmente no seu trabalho quando estiver pronto.</p>
+
+<p>Se você tem um branch configurado para acompanhar um branch remoto (veja a próxima seção e o <em>Capítulo 3</em> para mais informações), você pode usar o comando <code>git pull</code> para automaticamente fazer o fetch e o merge de um branch remoto no seu branch atual. Essa pode ser uma maneira mais fácil ou confortável pra você; e por padrão, o comando <code>git clone</code> automaticamente configura seu branch local master para acompanhar o branch remoto master do servidor de onde você clonou (desde que o remoto tenha um branch master). Executar <code>git pull</code> geralmente busca os dados do servidor de onde você fez o clone originalmente e automaticamente tenta fazer o merge dele no código que você está trabalhando atualmente.</p>
+
+<h3 id="Pushing-Para-Seus-Remotos"><a href="#Pushing-Para-Seus-Remotos">Pushing Para Seus Remotos</a></h3>
+
+<p>Quando o seu projeto estiver pronto para ser compartilhado, você tem que enviá-lo para a fonte. O comando para isso é simples: <code>git push [nome-remoto] [branch]</code>. Se você quer enviar o seu branch master para o servidor <code>origin</code> (novamente, clonando normalmente define estes dois nomes para você automaticamente), então você pode rodar o comando abaixo para enviar o seu trabalho para o servidor:</p>
+
+<pre><code>$ git push origin master
+</code></pre>
+
+<p>Este comando funciona apenas se você clonou de um servidor que você têm permissão para escrita, e se mais ninguém enviou dados no meio tempo. Se você e mais alguém clonarem ao mesmo tempo, e você enviar suas modificações após a pessoa ter enviado as dela, o seu push será rejeitado. Antes, você terá que fazer um pull das modificações deste outro alguém, e incorporá-las às suas para que você tenha permissão para enviá-las. Veja o <em>Capítulo 3</em> para mais detalhes sobre como enviar suas modificações para servidores remotos.</p>
+
+<h3 id="Inspecionando-um-Remoto"><a href="#Inspecionando-um-Remoto">Inspecionando um Remoto</a></h3>
+
+<p>Se você quer ver mais informação sobre algum remoto em particular, você pode usar o comando <code>git remote show [nome-remoto]</code>. Se você rodar este comando com um nome específico, como <code>origin</code>, você verá algo assim:</p>
+
+<pre><code>$ git remote show origin
+* remote origin
+  URL: git://github.com/schacon/ticgit.git
+  Remote branch merged with &#39;git pull&#39; while on branch master
+    master
+  Tracked remote branches
+    master
+    ticgit
+</code></pre>
+
+<p>Ele lista a URL do repositório remoto assim como as branches sendo rastreadas. O resultado deste comando lhe diz que se você está na branch master e rodar <code>git pull</code>, ele automaticamente fará um merge na branch master no remoto depois que ele fizer o fetch de todas as referências remotas. Ele também lista todas as referências remotas que foram puxadas.</p>
+
+<p>Este é um simples exemplo que você talvez encontre por aí. Entretanto, quando se usa o Git pra valer, você pode ver muito mais informação vindo de <code>git remote show</code>:</p>
+
+<pre><code>$ git remote show origin
+* remote origin
+  URL: git@github.com:defunkt/github.git
+  Remote branch merged with &#39;git pull&#39; while on branch issues
+    issues
+  Remote branch merged with &#39;git pull&#39; while on branch master
+    master
+  New remote branches (next fetch will store in remotes/origin)
+    caching
+  Stale tracking branches (use &#39;git remote prune&#39;)
+    libwalker
+    walker2
+  Tracked remote branches
+    acl
+    apiv2
+    dashboard2
+    issues
+    master
+    postgres
+  Local branch pushed with &#39;git push&#39;
+    master:master
+</code></pre>
+
+<p>Este comando mostra qual branch é automaticamente enviado (pushed) quando você roda <code>git push</code> em determinados branches. Ele também mostra quais branches remotos que estão no servidor e você não tem, quais branches remotos você tem e que foram removidos do servidor, e múltiplos branches que são automaticamente mesclados (merged) quando você roda <code>git pull</code>.</p>
+
+<h3 id="Removendo-e-Renomeando-Remotos"><a href="#Removendo-e-Renomeando-Remotos">Removendo e Renomeando Remotos</a></h3>
+
+<p>Se você quiser renomear uma referência, em versões novas do Git você pode rodar <code>git remote rename</code> para modificar um apelido de um remoto. Por exemplo, se você quiser renomear <code>pb</code> para <code>paul</code>, você pode com <code>git remote rename</code>:</p>
+
+<pre><code>$ git remote rename pb paul
+$ git remote
+origin
+paul
+</code></pre>
+
+<p>É válido mencionar que isso modifica também os nomes dos branches no servidor remoto. O que costumava ser referenciado como <code>pb/master</code> agora é <code>paul/master</code>.</p>
+
+<p>Se você quiser remover uma referência por qualquer razão — você moveu o servidor ou não está mais usando um mirror específico, ou talvez um contribuidor não está mais contribuindo — você usa <code>git remote rm</code>:</p>
+
+<pre><code>$ git remote rm paul
+$ git remote
+origin
+</code></pre>
+
+<div id="nav"><a href="/book/pt-br/v1/Git-Essencial-Desfazendo-Coisas">prev</a> | <a href="/book/pt-br/v1/Git-Essencial-Tagging">next</a></div></div>
+</div>
+
+        </div>
+      </div>
+      <footer>
+  <div class="site-source">
+    <a href="/site">About this site</a><br>
+    Patches, suggestions, and comments are welcome.
+  </div>
+  <div class="sfc-member">
+    Git is a member of <a href="/sfc">Software Freedom Conservancy</a>
+  </div>
+</footer>
+
+<script src="/assets/application-df8e4c34a53c9af865972757bd97591066f28f7c8ce2ec256c1b2f10c8c7b16a.js"></script>
+
+    </div>
+
+</body>
+</html>
