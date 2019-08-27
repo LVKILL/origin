@@ -1,0 +1,30 @@
+Nos tutoriais anteriores, toda vez que precisávamos subir algum commit para o repositório remoto no GitHub, era necessário informar o username e a senha. Quando precisamos executar commits e atualizar o repositório remoto frequentemente, esse processo se torna chato e improdutivo. Nesse post, iremos aprender a configurar chaves SSH para fazermos a autenticação automaticamente.
+O primeiro passo é criar uma chave SSH que será armazenada localmente. Para isso, abra o terminal e execute o comando:
+
+$ ssh-keygen -t rsa -b 4096 -C "email_do_github"
+
+O email deverá ser o que é utilizado na sua conta do GitHub. Depois de executado, o programa solicitará um nome de arquivo para a chave SSH. Se apenas pressionarmos Enter, o nome e a localização padrão serão utilizados(/home/usuário/.ssh/id_rsa). Após isso, também será solicitada uma senha para a chave, que não precisa ser a mesma senha da conta do GitHub.
+Com a chave SSH criada, precisamos adicioná-la ao ssh-agent para que a chave seja detectada automaticamente. Para isso, primeiro iniciamos o programa ssh-agent e depois utilizamos o comando ssh-add.
+
+$ eval "${ssh-agent -s}"
+Agent pid 59566
+$ ssh-add ~/.ssh/id_rsa
+
+Agora só precisamos adicionar a chave SSH à conta do GitHub. Para isso, faça login, clique na foto de perfil no canto superior direito e escolha a opção Settings. Na barra lateral da tela de configuração, clique em SSH and GPG keys.
+
+
+Ao clicar em SSH key, escolha um título que represente o computador onde a chave está armazenada, copie todo o conteúdo do arquivo id_rsa.pub(armazenado no diretório /home/usuário/.ssh) e cole no campo Key.
+
+Depois de clicar em Add SSH key, a chave será listada, com a opção de ser removida posteriormente.
+
+Antes de testar a chave, é importante alterar a URL do repositório remoto no nosso repositório local. Por exemplo, se fizermos um clone do repositório do GitHub, provavelmente a URL do repositório remoto será algo como https://github.com/username/repo-name.git. Porém, para podermos utilizar a chave SSH automaticamente, é necessário alterar a URL HTTPS para uma URL SSH. Como exemplo, suponha que nossa URL é https://github.com/andgomes/my-repo.git:
+
+
+$ git remote -v
+origin https://github.com/andgomes/my-repo.git (fetch)
+origin https://github.com/andgomes/my-repo.git (push)
+
+$ git remote set-url origin git@github.com:andgomes/my-repo.git
+
+
+Pronto. Agora toda vez que fizermos um push para o repositório remoto do GitHub não precisaremos mais informar username ou senha.
